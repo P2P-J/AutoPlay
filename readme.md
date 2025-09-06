@@ -1,4 +1,4 @@
-🎓 자동 강의 재생기 (Auto Lecture Player) - Aen
+🎬Autoplay - Aen
 
 강의가 끝나면 자동으로 다음 강의를 재생해주는 똑똑한 Chrome 확장 프로그램
 
@@ -49,3 +49,11 @@ bash : git clone https://github.com/P2P-J/AutoPlay
 "다음 강의", "다음", "Next"
 "계속", "Continue"
 "다음 동영상", "Next Video"
+
+🐛 문제 해결
+
+Q: 첫 번째 영상이 자동 재생되지 않아요
+A: 브라우저의 자동재생 정책 때문입니다. 첫 영상을 한 번 수동으로 클릭하면 그 다음부터는 자동으로 작동합니다.
+
+Q: 확장 프로그램이 보이지 않아요
+A: chrome://extensions/에서 확장 프로그램이 활성화되어 있는지 확인하고, 툴바에서 퍼즐 조각 아이콘을 클릭해 고정해보세요.
