@@ -1,4 +1,4 @@
-##🎬Autoplay - Aen##
+**🎬Autoplay - Aen**
 
 강의가 끝나면 자동으로 다음 강의를 재생해주는 똑똑한 Chrome 확장 프로그램
 
