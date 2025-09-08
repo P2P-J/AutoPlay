@@ -1,4 +1,4 @@
-// 프로그래머스 데브코스 풀스택 8기 친구들아. 이 프로그램으로 좀 더 너희가 강의를 편하게 들을 수 있다면 좋겠어! 강의 열심히 듣고 우리 꼭 끝까지 해보자! 화이팅!!! ㅎㅎㅎ - 보근
+// 프로그래머스 데브코스 풀스택 8기 친구들아. 이 프로그램으로 좀 더 너희가 강의를 편하게 들을 수 있다면 좋겠어. 강의 열심히 듣고 우리 꼭 끝까지 해보자! 화이팅!!! - 보근
 (function () {
   console.log("🎓 완전 자동화 강의 스크립트가 시작되었습니다! - Make Aen");
   console.log("📋 기능: 영상 종료 감지 → 다음 강의 이동 → 자동 재생");
@@ -137,7 +137,7 @@
   );
 })();
 
-/* 혹여 이런 오류가 뜬다면 무시해도 괜찮아요!
+/* 혹여 이런 오류가 뜬다면 무시해도 괜찮소!
 'fb3b40a68c6f4ebed8dc.js:2 Error processing XMLHttpRequest response: InvalidStateError: Failed to read the 'responseText' property from 'XMLHttpRequest': The value is only accessible if the object's 'responseType' is '' or 'text' (was 'arraybuffer').
     at XMLHttpRequest.<anonymous> (inspector.js:7:2902)
     at XMLHttpRequest.o (fb3b40a68c6f4ebed8dc.js:2:1075900)'

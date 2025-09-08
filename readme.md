@@ -1,9 +1,35 @@
+🎬 Autoplay
+
+Smart Chrome extension that automatically plays the next lecture when current one ends
+🤔 Why do you need this extension?
+😩 Tired of these problems?
+
+Clicking "Next" button after every single lecture
+Interrupted learning when watching multiple lectures
+Wasting time manually navigating through long course series
+Missing progress when you step away briefly
+
+✨ This extension solves it all!
+
+🎯 Full automation: Set it once, all lectures play continuously
+⏰ Time saving: Focus on learning, not clicking
+🧘‍♂️ Better focus: Uninterrupted continuous learning
+💤 Convenience: Works even when you're away
+
+✨ Key Features
+
+🎬 Auto Next Lecture : Automatically moves to next lecture when video endsContinuous learning without clicks
+▶️ Auto Video Play : Automatically plays video on new lecture pageSeamless immersive learning
+🌐 Universal Support : Works on most online learning platformsUse anywhere conveniently
+🎛️ Simple ON/OFF : One-click to enable/disable functionalityControl when needed
+💾 Settings Saved : Remembers settings across browser sessionsSet once, use forever
+🚀 Lightweight : Runs quietly in backgroundNo performance impact
+
 **🎬Autoplay - Aen**
 
 강의가 끝나면 자동으로 다음 강의를 재생해주는 똑똑한 Chrome 확장 프로그램
 
 **✨ 주요 기능**
-
 
 🎬 자동 다음 강의 재생 : 영상이 끝나면 자동으로 다음 강의로 이동
 
@@ -16,7 +42,6 @@
 💾 설정 저장 : 브라우저를 껐다 켜도 설정 유지
 
 🚀 가벼움 : 백그라운드에서 조용히 작동
-
 
 **방법 1 : 확장프로그램 다운받기**
 
