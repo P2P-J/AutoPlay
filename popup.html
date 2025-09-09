@@ -2,33 +2,65 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>🎬Autoplay</title>
     <style>
       body {
-        width: 250px;
-        padding: 20px;
-        font-family: Arial, sans-serif;
+        width: 280px;
+        padding: 0;
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       }
 
       .header {
+        background: linear-gradient(135deg, #1976d2, #42a5f5);
+        color: white;
+        padding: 20px;
         text-align: center;
-        margin-bottom: 20px;
+      }
+
+      .header h2 {
+        margin: 0 0 5px 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .header .subtitle {
+        font-size: 12px;
+        opacity: 0.9;
+        margin: 0;
+      }
+
+      .content {
+        background: white;
+        padding: 20px;
+      }
+
+      .toggle-section {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 18px;
+        margin-bottom: 15px;
+        border: 1px solid #e9ecef;
       }
 
       .toggle-container {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 15px;
-        background: #f5f5f5;
-        border-radius: 8px;
-        margin-bottom: 15px;
+        margin-bottom: 8px;
+      }
+
+      .toggle-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 14px;
       }
 
       .switch {
         position: relative;
-        width: 50px;
-        height: 25px;
+        width: 54px;
+        height: 28px;
       }
 
       .switch input {
@@ -45,62 +77,186 @@
         right: 0;
         bottom: 0;
         background-color: #ccc;
-        transition: 0.3s;
-        border-radius: 25px;
+        transition: all 0.3s ease;
+        border-radius: 28px;
+        box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
       }
 
       .slider:before {
         position: absolute;
         content: "";
-        height: 19px;
-        width: 19px;
-        left: 3px;
-        bottom: 3px;
+        height: 20px;
+        width: 20px;
+        left: 4px;
+        bottom: 4px;
         background-color: white;
-        transition: 0.3s;
+        transition: all 0.3s ease;
         border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       }
 
       input:checked + .slider {
-        background-color: #2196f3;
+        background: linear-gradient(135deg, #1976d2, #42a5f5);
       }
 
       input:checked + .slider:before {
-        transform: translateX(25px);
+        transform: translateX(26px);
+      }
+
+      .status-text {
+        font-size: 12px;
+        color: #6c757d;
+        text-align: center;
       }
 
       .status {
         text-align: center;
-        padding: 10px;
-        border-radius: 6px;
+        padding: 12px;
+        border-radius: 8px;
         font-weight: 500;
+        font-size: 13px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
       }
 
       .status.active {
-        background: #e8f5e8;
+        background: linear-gradient(135deg, #e8f5e8, #f1f8e9);
         color: #2e7d32;
+        border: 1px solid #c8e6c9;
       }
 
       .status.inactive {
-        background: #fff3e0;
+        background: linear-gradient(135deg, #fff3e0, #ffeaa7);
         color: #e65100;
+        border: 1px solid #ffcc02;
+      }
+
+      .info-box {
+        background: #ffffff;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 15px;
+      }
+
+      .info-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+      }
+
+      .info-list {
+        font-size: 11px;
+        color: #6c757d;
+        line-height: 1.4;
+        margin: 0;
+        padding-left: 12px;
+      }
+
+      .footer {
+        background: #f8f9fa;
+        padding: 12px 20px;
+        text-align: center;
+        border-top: 1px solid #e9ecef;
+      }
+
+      .version {
+        font-size: 10px;
+        color: #6c757d;
+        margin-bottom: 5px;
+      }
+
+      .author {
+        font-size: 10px;
+        color: #1976d2;
+        font-weight: 500;
+      }
+
+      .pulse {
+        animation: pulse 1.5s ease-in-out;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.02);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .loading {
+        display: none;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #1976d2;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
     </style>
   </head>
   <body>
     <div class="header">
-      <h3>🎬Autoplay</h3>
+      <h2>🎬 AutoPlay - Aen</h2>
+      <p class="subtitle">AutoPlay</p>
     </div>
 
-    <div class="toggle-container">
-      <span>자동 재생</span>
-      <label class="switch">
-        <input type="checkbox" id="toggleSwitch" checked />
-        <span class="slider"></span>
-      </label>
+    <div class="content">
+      <div class="toggle-section">
+        <div class="toggle-container">
+          <span class="toggle-label">자동 재생</span>
+          <label class="switch">
+            <input type="checkbox" id="toggleSwitch" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="status-text">영상 종료 → 다음 강의 이동 → 자동 재생</div>
+        <div class="loading" id="loading"></div>
+      </div>
+
+      <div id="status" class="status active">
+        ✅ 활성화됨 - 자동 재생 준비 완료
+      </div>
+
+      <div class="info-box">
+        <div class="info-title">🚀 지원 기능</div>
+        <ul class="info-list">
+          <li>영상 끝나면 자동으로 다음 강의 이동</li>
+          <li>새 페이지에서 영상 자동 재생</li>
+          <li>일시정지 상태 자동 감지 및 재생</li>
+          <li>모든 강의 사이트 호환</li>
+        </ul>
+      </div>
+
+      <div class="info-box">
+        <div class="info-title">💡 사용 팁</div>
+        <ul class="info-list">
+          <li>첫 번째 영상은 수동으로 재생 버튼 클릭</li>
+          <li>그 이후부터는 완전 자동화</li>
+          <li>비활성화하면 영상 일시정지 가능</li>
+        </ul>
+      </div>
     </div>
 
-    <div id="status" class="status active">✅ 활성화됨</div>
+    <div class="footer">
+      <div class="version">버전 1.0.0</div>
+      <div class="author">Made by Aen</div>
+    </div>
 
     <script src="popup.js"></script>
   </body>
