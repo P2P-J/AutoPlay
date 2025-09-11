@@ -45,7 +45,7 @@ Missing progress when you step away briefly
 
 **방법 1 : 확장프로그램 다운받기**
 
-Chrome에서 chrome://extensions/ 접속
+Chrome에서 [chrome://extensions/](https://chromewebstore.google.com/detail/autoplay/ldaonocfecodgdoedlehngekfaeobbmd?hl=ko&utm_source=ext_sidebar) 접속
 다운로드 받기!
 브라우저 툴바에 아이콘이 나타나면 실행완료!
 처음에만 영상의 재생 버튼 눌러주기!
@@ -88,4 +88,4 @@ Q: 첫 번째 영상이 자동 재생되지 않아요
 A: 브라우저의 자동재생 정책 때문입니다. 첫 영상을 한 번 수동으로 클릭하면 그 다음부터는 자동으로 작동합니다.
 
 Q: 확장 프로그램이 보이지 않아요
-A: chrome://extensions/에서 확장 프로그램이 활성화되어 있는지 확인하고, 툴바에서 퍼즐 조각 아이콘을 클릭해 고정해보세요.
+A:[ chrome://extensions/](https://chromewebstore.google.com/detail/autoplay/ldaonocfecodgdoedlehngekfaeobbmd?hl=ko&utm_source=ext_sidebar) 에서 확장 프로그램이 활성화되어 있는지 확인하고, 툴바에서 퍼즐 조각 아이콘을 클릭해 고정해보세요.
