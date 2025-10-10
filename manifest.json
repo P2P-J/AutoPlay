@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AutoPlay",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "An extension that automatically plays the next lecture when it ends.",
   "permissions": ["activeTab", "storage"],
   "content_scripts": [

@@ -131,6 +131,18 @@
         border: 1px solid #ffcc02;
       }
 
+      .status.sound-on {
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        color: #1565c0;
+        border: 1px solid #90caf9;
+      }
+
+      .status.muted {
+        background: linear-gradient(135deg, #fce4ec, #f8bbd0);
+        color: #c2185b;
+        border: 1px solid #f48fb1;
+      }
+
       .info-box {
         background: #ffffff;
         border: 1px solid #e9ecef;
@@ -226,11 +238,26 @@
           </label>
         </div>
         <div class="status-text">영상 종료 → 다음 강의 이동 → 자동 재생</div>
+      </div>
+
+      <div class="toggle-section">
+        <div class="toggle-container">
+          <span class="toggle-label">🔊 소리 음소거</span>
+          <label class="switch">
+            <input type="checkbox" id="muteSwitch" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="status-text">영상 소리를 켜거나 끌 수 있습니다</div>
         <div class="loading" id="loading"></div>
       </div>
 
       <div id="status" class="status active">
         ✅ 활성화됨 - 자동 재생 준비 완료
+      </div>
+
+      <div id="soundStatus" class="status sound-on">
+        🔊 소리 켜짐 - 오디오 재생
       </div>
 
       <div class="info-box">
@@ -239,6 +266,7 @@
           <li>영상 끝나면 자동으로 다음 강의 이동</li>
           <li>새 페이지에서 영상 자동 재생</li>
           <li>일시정지 상태 자동 감지 및 재생</li>
+          <li>영상 소리 제어 (켜기/끄기)</li>
           <li>모든 강의 사이트 호환</li>
         </ul>
       </div>
@@ -249,12 +277,13 @@
           <li>첫 번째 영상은 수동으로 재생 버튼 클릭</li>
           <li>그 이후부터는 완전 자동화</li>
           <li>비활성화하면 영상 일시정지 가능</li>
+          <li>음소거 모드로 조용히 강의 시청</li>
         </ul>
       </div>
     </div>
 
     <div class="footer">
-      <div class="version">버전 1.1.0</div>
+      <div class="version">버전 1.2.0</div>
       <div class="author">Made by Aen</div>
     </div>
 

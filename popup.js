@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const toggleSwitch = document.getElementById("toggleSwitch");
+  const muteSwitch = document.getElementById("muteSwitch");
   const status = document.getElementById("status");
+  const soundStatus = document.getElementById("soundStatus");
   const loading = document.getElementById("loading");
 
   console.log("AutoPlay popup이 로드되었습니다.");
@@ -17,20 +19,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function loadCurrentState() {
     // Chrome storage에서 현재 상태 불러오기
-    chrome.storage.local.get(["autoPlayEnabled"], function (result) {
+    chrome.storage.local.get(["autoPlayEnabled", "soundMuted"], function (result) {
       const isEnabled = result.autoPlayEnabled !== false; // 기본값 true
+      const isMuted = result.soundMuted === true; // 기본값 false
+      
       toggleSwitch.checked = isEnabled;
+      muteSwitch.checked = isMuted;
+      
       updateStatus(isEnabled);
+      updateSoundStatus(isMuted);
 
-      console.log(`현재 상태: ${isEnabled ? "활성화" : "비활성화"}`);
+      console.log(`현재 상태: ${isEnabled ? "활성화" : "비활성화"}, 소리: ${isMuted ? "음소거" : "켜짐"}`);
     });
   }
 
   function setupEventListeners() {
-    // 토글 스위치 이벤트
+    // 자동 재생 토글 스위치 이벤트
     toggleSwitch.addEventListener("change", handleToggleChange);
 
-    // 키보드 단축키 (스페이스바로 토글)
+    // 음소거 토글 스위치 이벤트
+    muteSwitch.addEventListener("change", handleMuteToggleChange);
+
+    // 키보드 단축키 (스페이스바로 자동재생 토글)
     document.addEventListener("keydown", function (e) {
       if (e.code === "Space") {
         e.preventDefault();
@@ -53,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("설정이 저장되었습니다.");
 
       // 현재 탭에 메시지 전송
-      sendMessageToCurrentTab(isEnabled);
+      sendMessageToCurrentTab("toggle", isEnabled);
 
       // UI 업데이트
       updateStatus(isEnabled);
@@ -66,15 +76,42 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function sendMessageToCurrentTab(isEnabled) {
+  function handleMuteToggleChange() {
+    const isMuted = muteSwitch.checked;
+
+    console.log(`음소거 상태 변경: ${isMuted ? "음소거" : "소리 켜짐"}`);
+
+    // 로딩 표시
+    showLoading(true);
+
+    // 상태 저장
+    chrome.storage.local.set({ soundMuted: isMuted }, function () {
+      console.log("음소거 설정이 저장되었습니다.");
+
+      // 현재 탭에 메시지 전송
+      sendMessageToCurrentTab("toggleMute", isMuted);
+
+      // UI 업데이트
+      updateSoundStatus(isMuted);
+
+      // 피드백 효과
+      addSoundFeedbackEffect(isMuted);
+
+      // 로딩 숨김
+      setTimeout(() => showLoading(false), 500);
+    });
+  }
+
+  function sendMessageToCurrentTab(action, value) {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
       if (tabs[0]) {
+        const message = action === "toggle" 
+          ? { action: "toggle", enabled: value }
+          : { action: "toggleMute", muted: value };
+
         chrome.tabs.sendMessage(
           tabs[0].id,
-          {
-            action: "toggle",
-            enabled: isEnabled,
-          },
+          message,
           function (response) {
             if (chrome.runtime.lastError) {
               // 메시지 전송 실패 시 (페이지가 지원하지 않는 경우)
@@ -101,6 +138,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function updateSoundStatus(isMuted) {
+    if (isMuted) {
+      soundStatus.textContent = "🔇 음소거됨 - 소리 없이 재생";
+      soundStatus.className = "status muted";
+    } else {
+      soundStatus.textContent = "🔊 소리 켜짐 - 오디오 재생";
+      soundStatus.className = "status sound-on";
+    }
+  }
+
   function showLoading(show) {
     loading.style.display = show ? "block" : "none";
   }
@@ -113,22 +160,36 @@ document.addEventListener("DOMContentLoaded", function () {
     // 콘솔에 상태 로그
     if (isEnabled) {
       console.log("🎬 자동 강의 재생이 활성화되었습니다!");
-      console.log("📋 기능: 영상 종료 감지 → 다음 강의 이동 → 자동 재생");
     } else {
       console.log("⏸️ 자동 강의 재생이 비활성화되었습니다.");
-      console.log("🎯 영상을 일시정지해도 자동 재생되지 않습니다.");
     }
+  }
+
+  function addSoundFeedbackEffect(isMuted) {
+    // 상태 표시에 펄스 효과 추가
+    soundStatus.classList.add("pulse");
+    setTimeout(() => soundStatus.classList.remove("pulse"), 1500);
   }
 
   // 스토리지 변경 감지 (다른 탭에서 변경된 경우)
   chrome.storage.onChanged.addListener(function (changes, areaName) {
-    if (areaName === "local" && changes.autoPlayEnabled) {
-      const newValue = changes.autoPlayEnabled.newValue;
-      toggleSwitch.checked = newValue;
-      updateStatus(newValue);
-      console.log(
-        `다른 탭에서 상태가 변경됨: ${newValue ? "활성화" : "비활성화"}`
-      );
+    if (areaName === "local") {
+      if (changes.autoPlayEnabled) {
+        const newValue = changes.autoPlayEnabled.newValue;
+        toggleSwitch.checked = newValue;
+        updateStatus(newValue);
+        console.log(
+          `다른 탭에서 상태가 변경됨: ${newValue ? "활성화" : "비활성화"}`
+        );
+      }
+      if (changes.soundMuted) {
+        const newValue = changes.soundMuted.newValue;
+        muteSwitch.checked = newValue;
+        updateSoundStatus(newValue);
+        console.log(
+          `다른 탭에서 음소거 상태가 변경됨: ${newValue ? "음소거" : "소리 켜짐"}`
+        );
+      }
     }
   });
 

@@ -1,11 +1,11 @@
 // 프로그래머스 데브코스 풀스택 8기 친구들아. 이 프로그램으로 좀 더 너희가 강의를 편하게 들을 수 있다면 좋겠어. 강의 열심히 듣고 우리 꼭 끝까지 해보자! 화이팅!!! - 보근
 (function () {
   let isEnabled = true; // 확장 프로그램 활성화 상태
+  let isMuted = false; // 음소거 상태
   let isRunning = false; // 스크립트 실행 상태
   let mainInterval = null; // 인터벌 ID
 
   console.log("🎬 AutoPlay가 시작되었습니다! - Make Aen");
-  console.log("📋 기능: 영상 종료 감지 → 다음 강의 이동 → 자동 재생");
 
   // 초기화
   init();
@@ -13,13 +13,17 @@
   function init() {
     // Chrome storage에서 설정 확인
     if (typeof chrome !== "undefined" && chrome.storage) {
-      chrome.storage.local.get(["autoPlayEnabled"], function (result) {
+      chrome.storage.local.get(["autoPlayEnabled", "soundMuted"], function (result) {
         isEnabled = result.autoPlayEnabled !== false; // 기본값 true
-        console.log(`🔧 초기 설정: ${isEnabled ? "활성화" : "비활성화"}`);
+        isMuted = result.soundMuted === true; // 기본값 false
+        console.log(`🔧 초기 설정: ${isEnabled ? "활성화" : "비활성화"}, 소리: ${isMuted ? "음소거" : "켜짐"}`);
 
         if (isEnabled) {
           startAutoPlay();
         }
+        
+        // 초기 음소거 상태 적용
+        applyMuteState();
       });
 
       // popup으로부터 메시지 받기
@@ -37,11 +41,24 @@
             stopAutoPlay();
             console.log("⏹️ 자동 재생 기능이 비활성화되었습니다!");
           }
+        } else if (request.action === "toggleMute") {
+          isMuted = request.muted;
+          applyMuteState();
+          console.log(`🔊 소리 상태: ${isMuted ? "음소거" : "켜짐"}`);
         }
       });
     } else {
       // chrome 객체가 없는 경우 (콘솔에서 직접 실행)
       startAutoPlay();
+    }
+  }
+
+  // 음소거 상태 적용
+  function applyMuteState() {
+    const video = document.querySelector("video");
+    if (video) {
+      video.muted = isMuted;
+      console.log(`🔊 비디오 음소거 상태: ${isMuted ? "음소거됨" : "소리 켜짐"}`);
     }
   }
 
@@ -57,9 +74,11 @@
 
       const video = document.querySelector("video");
       if (video) {
+        // 음소거 상태 적용
+        video.muted = isMuted;
+
         // 영상이 일시정지 상태라면 재생
         if (video.paused) {
-          console.log("▶️ 영상을 자동 재생합니다!");
           video.play().catch((e) => {
             console.log("⚠️ 자동 재생 실패 (브라우저 정책): ", e.message);
             console.log("💡 페이지를 한 번 클릭하면 자동 재생이 활성화됩니다.");
@@ -80,7 +99,6 @@
 
         for (let playBtn of playButtons) {
           if (playBtn && playBtn.offsetParent !== null && !playBtn.disabled) {
-            console.log("🎮 재생 버튼을 클릭합니다!");
             playBtn.click();
             break;
           }
@@ -118,20 +136,21 @@
 
       const video = document.querySelector("video");
 
+      // 음소거 상태 지속적으로 적용 (사이트에서 변경할 수 있으므로)
+      if (video) {
+        video.muted = isMuted;
+      }
+
       // 영상이 있고 끝났다면
       if (video && video.ended) {
-        console.log("📺 영상이 끝났습니다!");
-
         const nextButton = findNextButton();
         if (nextButton) {
-          console.log("🔄 다음 강의 버튼을 클릭합니다!");
           nextButton.click();
 
           // 페이지 이동 후 영상 재생 대기
           setTimeout(() => {
             if (!isEnabled || !isRunning) return; // 여전히 활성화되어 있는지 확인
 
-            console.log("⏳ 새 페이지 로딩 대기 중...");
             autoPlayVideo();
 
             // 추가로 몇 번 더 시도 (로딩 시간 고려)
@@ -139,8 +158,6 @@
             setTimeout(() => isEnabled && isRunning && autoPlayVideo(), 4000);
             setTimeout(() => isEnabled && isRunning && autoPlayVideo(), 6000);
           }, 3000);
-        } else {
-          console.log("❌ 다음 강의 버튼을 찾을 수 없습니다.");
         }
       }
 
@@ -192,8 +209,6 @@
     setTimeout(() => {
       if (isEnabled && isRunning) autoPlayVideo();
     }, 2000);
-
-    console.log("✅ 완전 자동화 모드가 활성화되었습니다!");
   }
 
   function stopAutoPlay() {
@@ -203,15 +218,7 @@
       clearInterval(mainInterval);
       mainInterval = null;
     }
-
-    console.log("🛑 자동 강의 스크립트가 중단되었습니다.");
   }
-  console.log(
-    "⏹️ 중단하려면: stopAutoLecture() 입력 또는 확장 프로그램에서 OFF"
-  );
-  console.log(
-    "💡 팁: 브라우저 자동재생 정책으로 인해 첫 번째 영상은 수동 클릭이 필요할 수 있습니다."
-  );
 })();
 
 /* 혹여 이런 오류가 뜬다면 무시해도 괜찮소!
